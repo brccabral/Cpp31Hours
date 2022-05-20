@@ -3,24 +3,28 @@
 int main()
 {
 
-    char character1{'a'};
-    char character2{'r'};
-    char character3{'r'};
-    char character4{'o'};
-    char character5{'w'};
+    auto var1{12};
+    auto var2{13.0};
+    auto var3{14.0f};
+    auto var4{15.0l};
+    auto var5{'e'};
 
-    std::cout << character1 << std::endl;
-    std::cout << character2 << std::endl;
-    std::cout << character3 << std::endl;
-    std::cout << character4 << std::endl;
-    std::cout << character5 << std::endl;
+    // int modifier suffixes
+    auto var6{123u};  // unsigned
+    auto var7{123ul}; // unsigned long
+    auto var8{123ll}; // long long
+    
+    auto var9{'efg'};
 
-    // One byte in memory : 2^8 = 256 different values (0 ~ 255)
-    std::cout << std::endl;
-
-    char value = 65;                                                      // ASCII character code for 'A'
-    std::cout << "value : " << value << std::endl;                        // A
-    std::cout << "value(int) : " << static_cast<int>(value) << std::endl; // 65
+    std::cout << "var1 occupies : " << sizeof(var1) << " bytes" << std::endl;
+    std::cout << "var2 occupies : " << sizeof(var2) << " bytes" << std::endl;
+    std::cout << "var3 occupies : " << sizeof(var3) << " bytes" << std::endl;
+    std::cout << "var4 occupies : " << sizeof(var4) << " bytes" << std::endl;
+    std::cout << "var5 occupies : " << sizeof(var5) << " bytes" << std::endl;
+    std::cout << "var6 occupies : " << sizeof(var6) << " bytes" << std::endl;
+    std::cout << "var7 occupies : " << sizeof(var7) << " bytes" << std::endl;
+    std::cout << "var8 occupies : " << sizeof(var8) << " bytes" << std::endl;
+    std::cout << "var9 occupies : " << sizeof(var9) << " bytes" << std::endl;
 
     return 0;
 }
