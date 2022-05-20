@@ -1,30 +1,64 @@
 #include <iostream>
+#include <string>
+
+// Tools
+const int Pen{10};
+const int Marker{20};
+const int Eraser{30};
+const int Rectangle{40};
+const int Circle{50};
+const int Ellipse{60};
 
 int main()
 {
-    // sum "shor int" or "char" change the sizeof, they change to 4 bytes
-    // when initially was 2 and 1
 
-    short int var1{10}; // 2 bytes
-    short int var2{20};
+    int tool{Eraser};
 
-    char var3{40}; // 1 bytes
-    char var4{50};
+    switch (tool) // can be Integral types and enums : int, long, unsigned short, etc
+    {
+    case Pen:
+    {
+        std::cout << "Active tool is Pen" << std::endl;
+    }
+    break;
 
-    std::cout << "size of var1 : " << sizeof(var1) << std::endl;
-    std::cout << "size of var2 : " << sizeof(var2) << std::endl;
-    std::cout << "size of var3 : " << sizeof(var3) << std::endl;
-    std::cout << "size of var4 : " << sizeof(var4) << std::endl;
+    case Marker:
+    {
+        std::cout << "Active tool is Marker" << std::endl;
+    }
+    break;
 
-    auto result1 = var1 + var2; // 4 bytes
-    auto result2 = var3 + var4; // 4 bytes
+    case Eraser:
+    case Rectangle:
+    case Circle:
+    {
+        std::cout << "Drawing Shapes" << std::endl;
+    }
+    break;
 
-    std::cout << "size of result1 : " << sizeof(result1) << std::endl; // 4 bytes
-    std::cout << "size of result2 : " << sizeof(result2) << std::endl; // 4 bytes
+    case Ellipse:
+    {
+        std::cout << "Active tool is Ellipse" << std::endl;
+    }
+    break;
 
-    // the results are calculated as int and they present the correct math result
-    std::cout << "result1 : " << result1 << std::endl; // 30
-    std::cout << "result2 : " << result2 << std::endl; // 90
+    default:
+    {
+        std::cout << "No match found" << std::endl;
+    }
+    break;
+    }
+
+    std::cout << "Moving on" << std::endl;
+
+    /*
+    // Condition can only be integer of enum (We'll learn about enums later in the course)
+    std::string name {"John"};
+    switch (name) // Compiler error!
+    {
+
+    }
+    */
 
     return 0;
 }
