@@ -2,25 +2,11 @@
 
 int main()
 {
-    const size_t COUNT{100};
 
-    for (size_t i{0}; i < COUNT; i++)
+    for (size_t i{0}, x{5}, y{22}; y > 15; ++i, x += 5, y -= 1)
     {
-        std::cout << i << " : I love C++" << std::endl;
+        std::cout << "i: " << i << ", x : " << x << ", y : " << y << std::endl;
     }
-    std::cout << "Loop done!" << std::endl;
-    std::cout << "sizeof(size_t) : " << sizeof(size_t) << std::endl; // 8 bytes
-    // std::cout << "i : " << i << std::endl;                           // Compiler error : i is not in scope
-
-    size_t j{0}; // Iterator defined outside
-
-    // for (j ; j < COUNT; ++j)
-    for (; j < COUNT; ++j)
-    {
-        std::cout << j << " : I love C++" << std::endl;
-    }
-    std::cout << "Loop done!" << std::endl;
-    std::cout << "j : " << j << std::endl;
 
     return 0;
 }
