@@ -1,3 +1,8 @@
 .vscode/
 
 *.exe
+
+# cl.exe
+*.obj
+*.ilk
+*.pdb
