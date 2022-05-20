@@ -3,80 +3,39 @@
 
 int main()
 {
-    // srand() has to run once per program run
-    std::srand(std::time(0)); // Seed
+    // For 3d and really any multi dimensional array , you have to specify
+    // the number of elements in []'s , only the left most is not mandatory.
+    // Below is the example for 3D reproduced.Omitting the 5 or the 4 or both
+    // will cause a compile error.
 
-    char prediction0[]{"a lot of kinds running in the backyard!"};
-    char prediction1[]{"a lot of empty beer bootles on your work table."};
-    char prediction2[]{"you Partying too much with kids wearing weird clothes."};
-    char prediction3[]{"you running away from something really scary"};
-    char prediction4[]{"clouds gathering in the sky and an army standing ready for war"};
-    char prediction5[]{"dogs running around in a deserted empty city"};
-    char prediction6[]{"a lot of cars stuck in a terrible traffic jam"};
-    char prediction7[]{"you sitting in the dark typing lots of lines of code on your dirty computer"};
-    char prediction8[]{"you yelling at your boss. And oh no! You get fired!"};
-    char prediction9[]{"you laughing your lungs out. I've never seen this before."};
+    // If you put less elements than the amount specified in the declaration, the compiler
+    // will automaticaly fill out those left out with 0 or '\0' is the array is of char.
 
-    bool end{false};
+    int house_block1[][5][4]{
 
-    const int max_length{15};
-    char name[max_length]{};
+        {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}, {13, 14, 15}},
+        {{16, 17, 18}, {19, 20, 21}, {22, 23, 24}, {25, 26, 27}, {28, 29, 30}},
+        {{31, 32, 33}, {34, 35, 36}, {37, 38, 39}, {40, 41, 42}, {43, 44, 45}},
+        {{46, 47, 48}, {49, 50, 51}, {52, 53, 54}, {55, 56, 57}, {58, 59, 60}}
 
-    std::cout << "What's your name dear :" << std::endl;
+    };
 
-    std::cin.getline(name, max_length); // Get input with spaces
-
-    while (!end)
+    for (size_t i{0}; i < std::size(house_block1); ++i)
     {
-        std::cout << "Oh dear " << name << ", I see ";
 
-        size_t rand_num = static_cast<size_t>((std::rand() % 11));
+        for (size_t j{0}; j < std::size(house_block1[i]); ++j)
+        {
 
-        switch (rand_num)
-        { // [0~10]
-        case 0:
-            std::cout << prediction0 << std::endl;
-            break;
-        case 1:
-            std::cout << prediction1 << std::endl;
-            break;
-        case 2:
-            std::cout << prediction2 << std::endl;
-            break;
-        case 3:
-            std::cout << prediction3 << std::endl;
-            break;
-        case 4:
-            std::cout << prediction4 << std::endl;
-            break;
-        case 5:
-            std::cout << prediction5 << std::endl;
-            break;
-        case 6:
-            std::cout << prediction6 << std::endl;
-            break;
-        case 7:
-            std::cout << prediction7 << std::endl;
-            break;
-        case 8:
-            std::cout << prediction8 << std::endl;
-            break;
-        case 9:
-            std::cout << prediction9 << std::endl;
-            break;
+            std::cout << "[";
+            for (size_t k{0}; k < std::size(house_block1[i][j]); ++k)
+            {
 
-        default:
-            std::cout << ", huum, I don't see anything" << std::endl;
+                std::cout << house_block1[i][j][k] << " ";
+            }
+            std::cout << "] "; // Separate elements for good visualization
         }
-        std::cout << "Do you want me to try again ? (Y | N) : ";
-
-        char go_on;
-        std::cin >> go_on;
-
-        end = ((go_on == 'Y') || (go_on == 'y')) ? false : true;
+        std::cout << std::endl; // Separate elements for good visualization
     }
-
-    std::cout << "That's all I have for you today dear. Best wishes" << std::endl;
 
     return 0;
 }
