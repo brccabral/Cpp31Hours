@@ -3,25 +3,20 @@
 
 int main()
 {
-    int age;
-    std::string name;
+    int number1 = 15; // Decimal
+    int number2 = 017; // Octal
+    int number3 = 0x0F; // Hexadecimal
+    int number4 = 0b00001111; // Dinary
 
-    std::cout << "Type Last Name and Age separated by spaces: " << std::endl;
-    std::cin >> name >> age;
-    std::cout << "Hello " << name << "! You are " << age << " years old." << std::endl;
+    std::cout << "number1 " << number1 << std::endl;
+    std::cout << "number2 " << number2 << std::endl;
+    std::cout << "number3 " << number3 << std::endl;
+    std::cout << "number4 " << number4 << std::endl;
 
-    std::cerr << "Something is wrong" << std::endl;
-    std::clog << "Send to log" << std::endl;
-
-    std::string fullname;
-    std::cout << "Type Full Name: " << std::endl;
-    // need include <string> to use getline
-    // Previous line sends \n to cin, need to flush it to std::ws before getting the name
-    std::getline(std::cin >> std::ws, fullname); 
-    int age1;
-    std::cout << "Age: " << std::endl;
-    std::cin >> age1;
-    std::cout << "Welcome " << fullname << " Age " << age1 << std::endl;
+    
+    //Check the size with sizeof
+    std::cout << "sizeof int : " << sizeof(int) << std::endl;
+    std::cout << "sizeof truck_count : " << sizeof(number1) << std::endl;
 
     return 0;
 }
