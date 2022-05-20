@@ -3,39 +3,86 @@
 int main()
 {
 
-    int bag_of_values[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; // This is a collection of integers
-    // The variable value will be assigned a value from the values array on each iteration
+    // Declare an array of ints
+    int scores[10]; // Junk data
+
+    // Read data
+
+    std::cout << " scores [0] : " << scores[0] << std::endl;
+    std::cout << " scores [1] : " << scores[1] << std::endl;
+
+    // Read with a loop
 
     for (size_t i{0}; i < 10; ++i)
     {
-        std::cout << "value : " << bag_of_values[i] << std::endl;
+        std::cout << "scores [" << i << "] : " << scores[i] << std::endl;
     }
 
-    for (int value : bag_of_values)
+    scores[0] = 20;
+    scores[1] = 21;
+    scores[2] = 22;
+
+    // Print the data out
+    for (size_t i{0}; i < 10; ++i)
     {
-        // value holds a copy of the current iteration in the whole bag
-        std::cout << " value : " << value << std::endl;
+        std::cout << "scores [" << i << "] : " << scores[i] << std::endl;
     }
 
-    // Specify the collection in place
+    // Write data in a loop
 
-    for (int value : {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+    for (size_t i{0}; i < 10; ++i)
     {
-        // value holds a copy of the current iteration in the whole bag
-        std::cout << " value : " << value << std::endl;
+        scores[i] = i * 10;
     }
 
-    // Auto type deduction
-    for (auto value : {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+    // Print the data out
+    for (size_t i{0}; i < 10; ++i)
     {
-        // value holds a copy of the current iteration in the whole bag
-        std::cout << " value : " << value << std::endl;
+        std::cout << "scores [" << i << "] : " << scores[i] << std::endl;
     }
 
-    for (double multiplier{4}; auto i : {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+    // Declare and initialize at the same time
+
+    double salaries[5]{12.7, 7.5, 13.2, 8.1, 9.3};
+
+    for (size_t i{0}; i < 5; ++i)
     {
-        std::cout << "result : " << (i * multiplier) << std::endl;
+        std::cout << "salary[" << i << "] : " << salaries[i] << std::endl;
     }
+
+    // If you don't initialize all the elements, those you leave out
+    // are initialized to 0
+
+    int families[5]{12, 7, 5};
+
+    for (size_t i{0}; i < 5; ++i)
+    {
+        std::cout << "families[" << i << "] : " << families[i] << std::endl;
+    }
+
+    // Omit the size of the array at declaration
+
+    int class_sizes[]{10, 12, 15, 11, 18, 17, 23, 56};
+
+    // Will print this with a range based for loop
+    for (auto value : class_sizes)
+    {
+        std::cout << "value : " << value << std::endl;
+    }
+
+    // Read only arrays
+
+    const int birds[]{10, 12, 15, 11, 18, 17, 23, 56};
+    // birds[2] = 8; // don't compile
+
+    // Sum up scores array, store result in sum
+    int sum{0};
+
+    for (int element : scores)
+    {
+        sum += element;
+    }
+    std::cout << "Score sum : " << sum << std::endl;
 
     return 0;
 }
