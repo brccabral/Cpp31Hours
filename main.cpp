@@ -3,86 +3,26 @@
 int main()
 {
 
-    // Declare an array of ints
-    int scores[10]; // Junk data
+    int scores[]{1, 2, 5};
 
-    // Read data
+    int count{std::size(scores)}; // std::size( C++17)
 
-    std::cout << " scores [0] : " << scores[0] << std::endl;
-    std::cout << " scores [1] : " << scores[1] << std::endl;
+    std::cout << "sizeof(scores) : " << sizeof(scores) << std::endl;
+    std::cout << "sizeof(scores[0]) : " << sizeof(scores[0]) << std::endl;
+    std::cout << "count : " << count << std::endl;
 
-    // Read with a loop
+    int count2{sizeof(scores) / sizeof(scores[0])}; // before C++17
 
-    for (size_t i{0}; i < 10; ++i)
+    for (size_t i{0}; i < count2; ++i)
     {
         std::cout << "scores [" << i << "] : " << scores[i] << std::endl;
     }
 
-    scores[0] = 20;
-    scores[1] = 21;
-    scores[2] = 22;
-
-    // Print the data out
-    for (size_t i{0}; i < 10; ++i)
+    // Range based for loop
+    for (auto i : scores)
     {
-        std::cout << "scores [" << i << "] : " << scores[i] << std::endl;
+        std::cout << "value  : " << i << std::endl;
     }
-
-    // Write data in a loop
-
-    for (size_t i{0}; i < 10; ++i)
-    {
-        scores[i] = i * 10;
-    }
-
-    // Print the data out
-    for (size_t i{0}; i < 10; ++i)
-    {
-        std::cout << "scores [" << i << "] : " << scores[i] << std::endl;
-    }
-
-    // Declare and initialize at the same time
-
-    double salaries[5]{12.7, 7.5, 13.2, 8.1, 9.3};
-
-    for (size_t i{0}; i < 5; ++i)
-    {
-        std::cout << "salary[" << i << "] : " << salaries[i] << std::endl;
-    }
-
-    // If you don't initialize all the elements, those you leave out
-    // are initialized to 0
-
-    int families[5]{12, 7, 5};
-
-    for (size_t i{0}; i < 5; ++i)
-    {
-        std::cout << "families[" << i << "] : " << families[i] << std::endl;
-    }
-
-    // Omit the size of the array at declaration
-
-    int class_sizes[]{10, 12, 15, 11, 18, 17, 23, 56};
-
-    // Will print this with a range based for loop
-    for (auto value : class_sizes)
-    {
-        std::cout << "value : " << value << std::endl;
-    }
-
-    // Read only arrays
-
-    const int birds[]{10, 12, 15, 11, 18, 17, 23, 56};
-    // birds[2] = 8; // don't compile
-
-    // Sum up scores array, store result in sum
-    int sum{0};
-
-    for (int element : scores)
-    {
-        sum += element;
-    }
-    std::cout << "Score sum : " << sum << std::endl;
 
     return 0;
 }
