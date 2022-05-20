@@ -3,10 +3,23 @@
 int main()
 {
 
-    for (size_t i{0}, x{5}, y{22}; y > 15; ++i, x += 5, y -= 1)
-    {
-        std::cout << "i: " << i << ", x : " << x << ", y : " << y << std::endl;
-    }
+    // The comma operator combines
+    //  two or more expressions into a single expression,
+    //  where the value of the operation is the value of its right operand
+
+    int increment{5};
+    int number1{10};
+    int number2{20};
+    int number3{25};
+    int number4{0};
+    int result = (number1 *= ++increment, number4 = number2 - (++increment), number3 += ++increment);
+    // result = number3 += ++increment
+
+    std::cout << "number1 : " << number1 << std::endl; // 60
+    std::cout << "number2 : " << number2 << std::endl; // 20
+    std::cout << "number3 : " << number3 << std::endl; // 33
+    std::cout << "number4 : " << number4 << std::endl; // 13
+    std::cout << "result : " << result << std::endl;   // 33
 
     return 0;
 }
