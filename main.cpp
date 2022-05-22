@@ -2,44 +2,57 @@
 
 int main()
 {
-    // Verbose nullptr check
-    std::cout << std::endl;
-    std::cout << "Verbose nullptr check: " << std::endl;
 
-    int *p_number{}; // Initialized to nullptr
-    // p_number = new int(7);
+    // Memory leak = create variable on HEAP but don't delete (or loose access to it,
+    //   or use ptr to another HEAP variable)
 
     /*
-    if(!(p_number==nullptr)){ // just use "if (p_number)"
-        std::cout << "p_number points to a VALID address : "<< p_number << std::endl;
-        std::cout << "*p_number : " << *p_number << std::endl;
-    }else{
-        std::cout << "p_number points to an INVALID address." << std::endl;
-    }
+    // here ptr is on HEAP
+    int *p_number {new int{67}}; // Points to some address, let's call that address1
+
+    //Should delete and reset here
+
+    // number is on STACK
+    int number{55}; // stack variable
+
+    // changing the ptr from HEAP to STACK will leak the HEAP, because we lost the
+    // possibility to delete the HEAP
+    p_number = &number; // Now p_number points to address2 , but address1 is still in use by
+                        // our program. But our program has lost access to that memory location.
+                        //Memory has been leaked.
     */
-    if (p_number) // shor for "if(!(p_number==nullptr))"
+
+    // Double allocation
+    /*
+    // we put value on the HEAP
+    int *p_number1 {new int{55}};
+
+    //Use the pointer
+
+    //Should delete and reset here.
+
+    // we lost access to 55 because it is on HEAP
+    p_number1 = new int{44}; // memory with int{55} leaked.
+
+    delete p_number1;
+    p_number1 = nullptr;
+    */
+
+    /*
+
+    //Nested scopes with dynamically allocated memory
     {
-        std::cout << "p_number points to a VALID address : " << p_number << std::endl;
-        std::cout << "*p_number : " << *p_number << std::endl;
+        int *p_number2 {new int{57}};
+
+        // the ptr is on local scope, but 57 is on HEAP
+        // when scope ends, ptr is going to die but 57 will stay on HEAP
+
+        //Use the dynamic memory
+
     }
-    else
-    {
-        std::cout << "p_number points to an INVALID address." << std::endl;
-    }
+    //Memory with int{57} leaked.
 
-    delete p_number;
-    nullptr;
-
-    // It is OK call delete on a nullptr
-    // Calling delete on a nullptr is OK
-    int *p_number1{};
-
-    delete p_number1; // This won't cause any problem
-                      // if p_number1 contains nullptr
-
-    // if(p_number1 != nullptr){ // no need to check for nullptr if going to delete
-    //     delete p_number1;
-    // }
+    */
 
     return 0;
 }
