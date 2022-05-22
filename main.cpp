@@ -1,73 +1,91 @@
 #include <iostream>
+#include <iomanip>
 
 int main()
 {
 
-    // Dinamically is on HEAP
-    // Static is on STACK
+    int int_data{33};
+    double double_data{55};
 
-    const size_t size{10};
-    // size_t size{10}; // compiles normally because it is going to the HEAP, on STACK we need "const"
+    // References
+    int &ref_int_data{int_data};
+    double &ref_double_data{double_data};
 
-    // Different ways you can declare an array
-    // dynamically and how they are initialized
+    int tab_size = 19;
+    std::cout << std::left;
 
-    double *p_salaries{new double[size]}; // salaries array will
-                                          // contain garbage  values
+    // Print stuff out
+    std::cout << std::setw(tab_size) << "int_data"
+              << " : " << int_data << std::endl;
+    std::cout << std::setw(tab_size) << "&int_data"
+              << " : " << &int_data << std::endl;
+    std::cout << std::setw(tab_size) << "double_data"
+              << " : " << double_data << std::endl;
+    std::cout << std::setw(tab_size) << "&double_data"
+              << " : " << &double_data << std::endl;
 
-    int *p_students{new (std::nothrow) int[size]{}}; // All values initialized to 0
+    std::cout << "=======================" << std::endl;
 
-    double *p_scores{new (std::nothrow) double[size]{1, 2, 3, 4, 5}}; // Allocating memory space
-                                                                      // for an array  of size double
-                                                                      // vars. First 5 will be initialized
-                                                                      // with 1,2,3,4,5, and the
-                                                                      // rest will be 0's.
+    std::cout << std::setw(tab_size) << "ref_int_data"
+              << " : " << ref_int_data << std::endl;
+    std::cout << std::setw(tab_size) << "&ref_int_data"
+              << " : " << &ref_int_data << std::endl;
+    std::cout << std::setw(tab_size) << "ref_double_data"
+              << " : " << ref_double_data << std::endl;
+    std::cout << std::setw(tab_size) << "&ref_double_data"
+              << " : " << &ref_double_data << std::endl;
 
-    // nullptr check and use the allocated array
-    if (p_scores)
-    {
-        std::cout << "size of scores (it's a regular pointer) : " << sizeof(p_scores) << std::endl;
-        std::cout << "Successfully allocated memory for scores." << std::endl;
+    // changing original variable
+    int_data = 111;
+    double_data = 67.2;
 
-        // Print out elements. Can use regular array access notation, or pointer arithmetic
-        for (size_t i{}; i < size; ++i)
-        {
-            std::cout << "value : " << p_scores[i] << " : " << *(p_scores + i) << std::endl;
-        }
-    }
+    // Print stuff out
+    std::cout << std::endl;
+    std::cout << std::setw(tab_size) << "int_data"
+              << " : " << int_data << std::endl;
+    std::cout << std::setw(tab_size) << "&int_data"
+              << " : " << &int_data << std::endl;
+    std::cout << std::setw(tab_size) << "double_data"
+              << " : " << double_data << std::endl;
+    std::cout << std::setw(tab_size) << "&double_data"
+              << " : " << &double_data << std::endl;
 
-    // this is how to delete HEAP Array Ptr
-    delete[] p_salaries;
-    p_salaries = nullptr;
+    std::cout << "=======================" << std::endl;
 
-    delete[] p_students;
-    p_students = nullptr;
+    std::cout << std::setw(tab_size) << "ref_int_data"
+              << " : " << ref_int_data << std::endl;
+    std::cout << std::setw(tab_size) << "&ref_int_data"
+              << " : " << &ref_int_data << std::endl;
+    std::cout << std::setw(tab_size) << "ref_double_data"
+              << " : " << ref_double_data << std::endl;
+    std::cout << std::setw(tab_size) << "&ref_double_data"
+              << " : " << &ref_double_data << std::endl;
 
-    delete[] p_scores;
-    p_scores = nullptr;
+    // changing reference variable
+    ref_int_data = 1012;
+    ref_double_data = 1000.45;
 
-    // Static arrays Vs dynamic arrays
-    std::cout << "=====================================" << std::endl;
+    // Print stuff out
+    std::cout << std::endl;
+    std::cout << std::setw(tab_size) << "int_data"
+              << " : " << int_data << std::endl;
+    std::cout << std::setw(tab_size) << "&int_data"
+              << " : " << &int_data << std::endl;
+    std::cout << std::setw(tab_size) << "double_data"
+              << " : " << double_data << std::endl;
+    std::cout << std::setw(tab_size) << "&double_data"
+              << " : " << &double_data << std::endl;
 
-    int scores[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; // Lives on the stack
+    std::cout << "=======================" << std::endl;
 
-    std::cout << "scores size : " << std::size(scores) << std::endl;
-    for (auto s : scores)
-    {
-        std::cout << "value : " << s << std::endl;
-    }
-
-    int *p_scores1 = new int[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; // Lives on the heap.
-
-    // can't use str::size on HEAP Array Ptr
-    // std::cout << "p_scores1 size : " << std::size(p_scores) << std::endl;
-
-    // can't use range based loops on HEAP Array Ptr
-    /*
-    for( auto s : p_scores1){
-        std::cout << "value : " << s << std::endl;
-    }
-    */
+    std::cout << std::setw(tab_size) << "ref_int_data"
+              << " : " << ref_int_data << std::endl;
+    std::cout << std::setw(tab_size) << "&ref_int_data"
+              << " : " << &ref_int_data << std::endl;
+    std::cout << std::setw(tab_size) << "ref_double_data"
+              << " : " << ref_double_data << std::endl;
+    std::cout << std::setw(tab_size) << "&ref_double_data"
+              << " : " << &ref_double_data << std::endl;
 
     return 0;
 }
