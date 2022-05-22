@@ -3,55 +3,70 @@
 int main()
 {
 
-    // Memory leak = create variable on HEAP but don't delete (or loose access to it,
-    //   or use ptr to another HEAP variable)
+    // Dinamically is on HEAP
+    // Static is on STACK
 
-    /*
-    // here ptr is on HEAP
-    int *p_number {new int{67}}; // Points to some address, let's call that address1
+    const size_t size{10};
+    // size_t size{10}; // compiles normally because it is going to the HEAP, on STACK we need "const"
 
-    //Should delete and reset here
+    // Different ways you can declare an array
+    // dynamically and how they are initialized
 
-    // number is on STACK
-    int number{55}; // stack variable
+    double *p_salaries{new double[size]}; // salaries array will
+                                          // contain garbage  values
 
-    // changing the ptr from HEAP to STACK will leak the HEAP, because we lost the
-    // possibility to delete the HEAP
-    p_number = &number; // Now p_number points to address2 , but address1 is still in use by
-                        // our program. But our program has lost access to that memory location.
-                        //Memory has been leaked.
-    */
+    int *p_students{new (std::nothrow) int[size]{}}; // All values initialized to 0
 
-    // Double allocation
-    /*
-    // we put value on the HEAP
-    int *p_number1 {new int{55}};
+    double *p_scores{new (std::nothrow) double[size]{1, 2, 3, 4, 5}}; // Allocating memory space
+                                                                      // for an array  of size double
+                                                                      // vars. First 5 will be initialized
+                                                                      // with 1,2,3,4,5, and the
+                                                                      // rest will be 0's.
 
-    //Use the pointer
-
-    //Should delete and reset here.
-
-    // we lost access to 55 because it is on HEAP
-    p_number1 = new int{44}; // memory with int{55} leaked.
-
-    delete p_number1;
-    p_number1 = nullptr;
-    */
-
-    /*
-
-    //Nested scopes with dynamically allocated memory
+    // nullptr check and use the allocated array
+    if (p_scores)
     {
-        int *p_number2 {new int{57}};
+        std::cout << "size of scores (it's a regular pointer) : " << sizeof(p_scores) << std::endl;
+        std::cout << "Successfully allocated memory for scores." << std::endl;
 
-        // the ptr is on local scope, but 57 is on HEAP
-        // when scope ends, ptr is going to die but 57 will stay on HEAP
-
-        //Use the dynamic memory
-
+        // Print out elements. Can use regular array access notation, or pointer arithmetic
+        for (size_t i{}; i < size; ++i)
+        {
+            std::cout << "value : " << p_scores[i] << " : " << *(p_scores + i) << std::endl;
+        }
     }
-    //Memory with int{57} leaked.
 
+    // this is how to delete HEAP Array Ptr
+    delete[] p_salaries;
+    p_salaries = nullptr;
+
+    delete[] p_students;
+    p_students = nullptr;
+
+    delete[] p_scores;
+    p_scores = nullptr;
+
+    // Static arrays Vs dynamic arrays
+    std::cout << "=====================================" << std::endl;
+
+    int scores[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; // Lives on the stack
+
+    std::cout << "scores size : " << std::size(scores) << std::endl;
+    for (auto s : scores)
+    {
+        std::cout << "value : " << s << std::endl;
+    }
+
+    int *p_scores1 = new int[10]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; // Lives on the heap.
+
+    // can't use str::size on HEAP Array Ptr
+    // std::cout << "p_scores1 size : " << std::size(p_scores) << std::endl;
+
+    // can't use range based loops on HEAP Array Ptr
+    /*
+    for( auto s : p_scores1){
+        std::cout << "value : " << s << std::endl;
+    }
     */
 
     return 0;
