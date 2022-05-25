@@ -1,41 +1,58 @@
 #include <iostream>
-#include <string>
+#include "person.h"
+
+// Variable : Declaration and definition
+double weight{};
+// double weight{}; // compile error = error C2374: 'weight': redefinition; multiple initialization
+
+double add(double a, double b);
+
+struct Point
+{
+    double m_x{};
+    double m_y{};
+};
+
+// error C2011: 'Point': 'struct' type redefinition
+// it is NOT allowed because it is in same translation unit
+//  struct Point
+//  {
+//      double m_x{};
+//      double m_y{};
+//  };
+
+// linker error = fatal error LNK1169: one or more multiply defined symbols found
+// it is already defined in some_other_file.cpp
+// int Person::person_count = 8;
+// Person::Person(const std::string &names_param, int age_param)
+//     : full_name{names_param}, age{age_param}
+// {
+//     ++person_count;
+// }
 
 int main()
 {
+    std::cout << weight << std::endl; // 0
 
-    std::string full_name;                              // Empty string
-    std::string planet{"Earth. Where the sky is blue"}; // Initialize with string literal
-    std::string prefered_planet{planet};                // Initialize with other existing string
-    std::string message{"Hello there", 5};              // Initialize with part of a string literal.
-                                                        // Contains hello
+    double result = add(10, 20);
+    std::cout << result << std::endl; // 30
 
-    std::string weird_message(4, 'e'); // Initialize with multiple copies of a char
-                                       //  contains eeee
+    Point p1;
+    std::cout << "p1.m_x : " << p1.m_x << std::endl; // p1.m_x : 0
 
-    std::string greeting{"Hello World"};
-    std::string saying_hello{greeting, 6, 5}; // Initialize with part of an existing std::string
-                                              //  starting at index 6, taking 5 characters.
-                                              // Will contain World.
-
-    std::cout << "full_name : " << full_name << std::endl;             // prints nothing
-    std::cout << "planet : " << planet << std::endl;                   // Earth. Where the sky is blue
-    std::cout << "prefered_planet : " << prefered_planet << std::endl; // Earth. Where the sky is blue
-    std::cout << "message : " << message << std::endl;                 // Hello
-    std::cout << "weird_message : " << weird_message << std::endl;     // eeee
-    std::cout << "greeting : " << greeting << std::endl;               // Hello World
-    std::cout << "saying_hello : " << saying_hello << std::endl;       // World
-
-    // Changing std::string at runtime
-    // here the program is using the same memory as before
-    planet = "Earth. Where the sky is blue Earth. Where the sky is blue Earth. Where ";
-    std::cout << "planet : " << planet << std::endl; // Earth. Where the sky is blue Earth. Where the sky is blue Earth. Where
-
-    // Use a raw array
-    const char *planet1{"Earth. Where the sky is blue Earth."};
-    // here the program is going to get a new memory space for the new string and the previous is wasted in memory
-    planet1 = "Earth. Where the sky is blue Earth. Where the sky is blue Earth. Where ";
-    std::cout << "planet1 : " << planet1 << std::endl; // Earth. Where the sky is blue Earth. Where the sky is blue Earth. Where
+    Person p2("John Snow", 35);
+    p2.print_info(); // name : John Snow , age : 35
 
     return 0;
 }
+
+double add(double a, double b)
+{
+    return a + b;
+}
+
+// compile error = error C2084: function 'double add(double,double)' already has a body
+// double add(double a, double b)
+// {
+//     return a + b;
+// }
