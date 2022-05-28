@@ -1,41 +1,47 @@
 #include <iostream>
+#include <cstring>
 
-// Declaration by reference
-// use "const" just to avoid changing value in function
 template <typename T>
-const T &maximum(const T &a, const T &b);
+T maximum(T a, T b)
+{
+    return (a > b) ? a : b;
+}
 
-// Declaration by value
-template <typename T>
-T maximum_by_value(T a, T b);
+template <>
+const char *maximum<const char *>(const char *a, const char *b)
+{
+    return (std::strcmp(a, b) > 0) ? a : b;
+}
 
 int main()
 {
 
-    double a{23.5};
-    double b{51.2};
+    int a{10};
+    int b{23};
+    double c{34.7};
+    double d{23.4};
+    std::string e{"hello"};
+    std::string f{"world"};
 
-    std::cout << "Out - &a: " << &a << std::endl; // 0xb4697ffce0
-    auto result_by_value = maximum_by_value(a, b);
+    auto max_int = maximum(a, b);    // int type deduced
+    auto max_double = maximum(c, d); // double type deduced
+    auto max_str = maximum(e, f);    // string type deduced
 
-    std::cout << "Out - &a: " << &a << std::endl; // 0xb4697ffce0
-    auto result = maximum(a, b);
+    std::cout << "max_int : " << max_int << std::endl;
+    std::cout << "max_double : " << max_double << std::endl;
+    std::cout << "max_str : " << max_str << std::endl;
+
+    const char *g{"wild"};
+    const char *h{"animal"};
+
+    // This won't do what you would expect : BEWARE!
+    // it will compare the addresses, not the values if calling the
+    // generic template, but as we created a specialized template,
+    // the comparison is going to use the std::strcomp function
+
+    const char *result = maximum(g, h); // will use the template that has "const char *" because there is a
+                                        // specialized template for "const char *"
+    std::cout << "max(const char*) : " << result << std::endl;
 
     return 0;
-}
-
-// Definition by value
-template <typename T>
-const T &maximum(const T &a, const T &b)
-{
-    std::cout << "In ref - &a: " << &a << std::endl; // 0xb4697ffce0 - same as out
-    return (a > b) ? a : b;
-}
-
-// Definition by reference
-template <typename T>
-T maximum_by_value(T a, T b)
-{
-    std::cout << "In value - &a: " << &a << std::endl; // 0xb4697ffc90 - different from out
-    return (a > b) ? a : b;
 }
