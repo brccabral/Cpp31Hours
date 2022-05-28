@@ -1,41 +1,41 @@
 #include <iostream>
-#include <string>
 
+// Declaration by reference
+// use "const" just to avoid changing value in function
 template <typename T>
-T maximum(T a, T b)
-{
-    return (a > b) ? a : b;
-}
+const T &maximum(const T &a, const T &b);
+
+// Declaration by value
+template <typename T>
+T maximum_by_value(T a, T b);
 
 int main()
 {
 
-    int a{10};
-    int b{23};
-    double c{34.7};
-    double d{23.4};
-    std::string e{"hello"};
-    std::string f{"world"};
+    double a{23.5};
+    double b{51.2};
 
-    maximum(a, b); // int type deduced
-    maximum(c, d); // double type deduced
-    maximum(e, f); // string type deduced
-    
-    // maximum(a, d); // Error, using different types
+    std::cout << "Out - &a: " << &a << std::endl; // 0xb4697ffce0
+    auto result_by_value = maximum_by_value(a, b);
 
-    // Explicit template arguments
-    auto max = maximum<double>(c, d); // explicitly say we want double template
-                                      // if compiler has not created yet, it will create now
-
-    std::cout << "max : " << max << std::endl;
-
-    auto max_int = maximum<int>(a, c); // explicitly say we want int template
-                                       // if compiler has not created yet, it will create now
-                                       // works because there is implicit convertion int to double
-
-    std::cout << "max : " << max_int << std::endl;
-
-    // auto max_str = maximum<double>(c, e); // Error, can't convert std::string to double
+    std::cout << "Out - &a: " << &a << std::endl; // 0xb4697ffce0
+    auto result = maximum(a, b);
 
     return 0;
+}
+
+// Definition by value
+template <typename T>
+const T &maximum(const T &a, const T &b)
+{
+    std::cout << "In ref - &a: " << &a << std::endl; // 0xb4697ffce0 - same as out
+    return (a > b) ? a : b;
+}
+
+// Definition by reference
+template <typename T>
+T maximum_by_value(T a, T b)
+{
+    std::cout << "In value - &a: " << &a << std::endl; // 0xb4697ffc90 - different from out
+    return (a > b) ? a : b;
 }
