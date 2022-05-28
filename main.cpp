@@ -2,35 +2,40 @@
 #include <string>
 
 template <typename T>
-T maximum(T a, T b);
+T maximum(T a, T b)
+{
+    return (a > b) ? a : b;
+}
 
 int main()
 {
 
-    int x{5};
-    int y{7};
-    auto result_int = maximum(x, y);
-    std::cout << "max(int) : " << result_int << std::endl;
-
+    int a{10};
+    int b{23};
     double c{34.7};
     double d{23.4};
-    std::cout << "max(double) : " << maximum(c, d) << std::endl;
+    std::string e{"hello"};
+    std::string f{"world"};
 
-    std::string h{"hello"};
-    std::string w{"world"};
-    std::cout << "max(string) : " << maximum(h, w) << std::endl;
+    maximum(a, b); // int type deduced
+    maximum(c, d); // double type deduced
+    maximum(e, f); // string type deduced
+    
+    // maximum(a, d); // Error, using different types
 
-    int *p_x{&x};
-    int *p_y{&y};
+    // Explicit template arguments
+    auto max = maximum<double>(c, d); // explicitly say we want double template
+                                      // if compiler has not created yet, it will create now
 
-    auto result = maximum(p_x, p_y);                  // will compare the addresses, not the values
-    std::cout << "result : " << *result << std::endl; // 5, not 7
+    std::cout << "max : " << max << std::endl;
+
+    auto max_int = maximum<int>(a, c); // explicitly say we want int template
+                                       // if compiler has not created yet, it will create now
+                                       // works because there is implicit convertion int to double
+
+    std::cout << "max : " << max_int << std::endl;
+
+    // auto max_str = maximum<double>(c, e); // Error, can't convert std::string to double
 
     return 0;
-}
-
-template <typename T>
-T maximum(T a, T b)
-{
-    return (a > b) ? a : b;
 }
