@@ -1,47 +1,48 @@
 #include <iostream>
-#include <cstring>
+#include <type_traits>
 
 template <typename T>
-T maximum(T a, T b)
+void print_number(T n)
 {
-    return (a > b) ? a : b;
-}
-
-template <>
-const char *maximum<const char *>(const char *a, const char *b)
-{
-    return (std::strcmp(a, b) > 0) ? a : b;
+    static_assert(std::is_integral_v<T>, "print_number() can only be called with integral types");
+    std::cout << "number : " << n << std::endl;
 }
 
 int main()
 {
 
-    int a{10};
-    int b{23};
-    double c{34.7};
-    double d{23.4};
-    std::string e{"hello"};
-    std::string f{"world"};
+    // std::is_integral true for int/const int/bool/char
+    // std::is_floating_point true for float/double, false for float&/double&
+    std::cout << std::boolalpha;
+    std::cout << "std::is_integral<int> : " << std::is_integral<int>::value << std::endl;
+    std::cout << "std::is_floating_point<int> : " << std::is_floating_point<int>::value << std::endl;
 
-    auto max_int = maximum(a, b);    // int type deduced
-    auto max_double = maximum(c, d); // double type deduced
-    auto max_str = maximum(e, f);    // string type deduced
+    std::cout << "-------------" << std::endl;
 
-    std::cout << "max_int : " << max_int << std::endl;
-    std::cout << "max_double : " << max_double << std::endl;
-    std::cout << "max_str : " << max_str << std::endl;
+    // std::is_integral_v = evaluates and returns a boolean
+    // std::is_floating_point_v = evaluates and returns a boolean
+    std::cout << "std::is_integral_v<int> : " << std::is_integral_v<int> << std::endl;
+    std::cout << "std::is_floating_point_v<int> : " << std::is_floating_point_v<int> << std::endl;
 
-    const char *g{"wild"};
-    const char *h{"animal"};
+    int a{7};
+    print_number(a);
 
-    // This won't do what you would expect : BEWARE!
-    // it will compare the addresses, not the values if calling the
-    // generic template, but as we created a specialized template,
-    // the comparison is going to use the std::strcomp function
+    double b{7};
+    // print_number(b); // error, b is double
 
-    const char *result = maximum(g, h); // will use the template that has "const char *" because there is a
-                                        // specialized template for "const char *"
-    std::cout << "max(const char*) : " << result << std::endl;
+    auto func = []<typename T>(T a, T b)
+    {
+        static_assert(std::is_integral_v<T>, "func can only be called with integral types");
+        return a + b;
+    };
+
+    double x{7};
+    double y{6};
+    // func(x,y); // error, x and y are double
+
+    int c{3};
+    int d{5};
+    func(c, d);
 
     return 0;
 }
