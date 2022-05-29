@@ -1,33 +1,54 @@
 #include <iostream>
+#include <type_traits>
 #include <concepts>
 
-// Concepts are only C++20 or later
-//  restrict function parameter types for function templates
-
 // Syntax1
+
 template <typename T>
-requires std::integral<T>
-    T add1(T a, T b)
+concept MyIntegral = std::is_integral_v<T>;
+
+MyIntegral auto add1(MyIntegral auto a, MyIntegral auto b)
 {
     return a + b;
 }
 
-// Syntax2
-template <std::integral T>
-T add2(T a, T b)
-{
-    return a + b;
-}
-
-// Syntax3
-auto add3(std::integral auto a, std::integral auto b)
-{
-    return a + b;
-}
-
-// Syntax4
 template <typename T>
-T add4(T a, T b) requires std::integral<T>
+concept Multipliable = requires(T a, T b)
+{
+    a * b; // Just makes sure the syntax is valid
+};
+
+template <typename T>
+requires Multipliable<T>
+    T mult1(T a, T b)
+{
+    return a * b;
+}
+
+template <typename T>
+concept Incrementable = requires(T a)
+{
+    a += 1;
+    ++a;
+    a++;
+};
+
+template <typename T>
+requires Incrementable<T>
+    T add2(T a, T b)
+{
+    return a + b;
+}
+
+// Syntax 3
+template <MyIntegral T>
+T add3(T a, T b)
+{
+    return a + b;
+}
+
+// Syntax 4
+MyIntegral auto add4(MyIntegral auto a, MyIntegral auto b)
 {
     return a + b;
 }
@@ -35,31 +56,35 @@ T add4(T a, T b) requires std::integral<T>
 int main()
 {
 
-    char a_0{10};
-    char a_1{20};
+    double x{6.3};
+    double y{7.4};
+    // add1(x, y); // error, params are not MyIntegral
+    add2(x, y);  // works because double is Incrementable
+    mult1(x, y); // works because double is Multipliable
 
-    auto result_a = add1(a_0, a_1);
-    std::cout << "result_a : " << static_cast<int>(result_a) << std::endl;
+    int a{1};
+    int b{2};
+    add1(a, b);
 
-    int b_0{11};
-    int b_1{5};
-    auto result_b = add2(b_0, b_1);
-    std::cout << "result_b : " << result_b << std::endl;
+    int c{0};
+    int d{5};
+    add2(c, d);
 
-    double c_0{11.1};
-    double c_1{1.9};
-    // auto result_c = add3(c_0,c_1); // error, params are double, func requires int
-    // std::cout << "result_c : " << result_c << std::endl;
+    std::string h{"Hello"};
+    std::string w{"World"};
+    // add1(h, w); // error, params are not MyIntegral
+    // add2(h, w); // error, params are not Incrementable
+    // mult1(h, w); // error, params are not Multipliable
 
-    int d_0{33};
-    int d_1{42};
-    auto result_d = add3(d_0, d_1);
-    std::cout << "result_d : " << result_d << std::endl;
+    int e{7};
+    int f{2};
+    add3(e, f);
 
-    int e_0{33};
-    int e_1{42};
-    auto result_e = add4(e_0, e_1);
-    std::cout << "result_e : " << result_e << std::endl;
+    int g{7};
+    int i{2};
+    add4(g, i);
+
+    std::cout << "Done!" << std::endl;
 
     return 0;
 }
