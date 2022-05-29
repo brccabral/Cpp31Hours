@@ -1,90 +1,62 @@
 #include <iostream>
-#include <type_traits>
 #include <concepts>
 
-// Syntax1
-
 template <typename T>
-concept MyIntegral = std::is_integral_v<T>;
-
-MyIntegral auto add1(MyIntegral auto a, MyIntegral auto b)
+concept TinyType = requires(T t)
 {
-    return a + b;
-}
-
-template <typename T>
-concept Multipliable = requires(T a, T b)
-{
-    a * b; // Just makes sure the syntax is valid
+    sizeof(T) <= 4;          // Simple requirement : Only enforces syntax
+    requires sizeof(T) <= 4; // Nested requirements
 };
 
+// Compound requirement
 template <typename T>
-requires Multipliable<T>
-    T mult1(T a, T b)
+concept Addable = requires(T a, T b)
 {
-    return a * b;
-}
+    // Checks if a + b is valid syntax, doesn't throw expetions(optional) , and the result
+    // is convertible to int(optional)
+    {
+        a + b
+    }
+    noexcept->std::convertible_to<int>; // Compound requirement
 
-template <typename T>
-concept Incrementable = requires(T a)
-{
-    a += 1;
-    ++a;
-    a++;
+    // noexcept is optional
+    // {a + b} -> std::convertible_to<int>; // Compound requirement
 };
 
-template <typename T>
-requires Incrementable<T>
-    T add2(T a, T b)
+TinyType auto add1(TinyType auto a, TinyType auto b)
 {
     return a + b;
 }
 
-// Syntax 3
-template <MyIntegral T>
-T add3(T a, T b)
-{
-    return a + b;
-}
-
-// Syntax 4
-MyIntegral auto add4(MyIntegral auto a, MyIntegral auto b)
+Addable auto add2(Addable auto a, Addable auto b)
 {
     return a + b;
 }
 
 int main()
 {
+    char c1{71};
+    char c2{23};
 
-    double x{6.3};
-    double y{7.4};
-    // add1(x, y); // error, params are not MyIntegral
-    add2(x, y);  // works because double is Incrementable
-    mult1(x, y); // works because double is Multipliable
+    auto cr = add1(c1, c2); // char is TinyType, will convert to int (size 4) because of math operation
+    std::cout << "cr : " << cr << std::endl;
+    auto cr2 = add2(c1, c2); // char is Addable
+    std::cout << "cr2 : " << cr2 << std::endl;
 
-    int a{1};
-    int b{2};
-    add1(a, b);
+    double x{67};
+    double y{56};
+    // auto s2 = add1(x1, y1); // string are not TinyType
 
-    int c{0};
-    int d{5};
-    add2(c, d);
+    // auto result = add1(x, y); // error, double is not TinyType
+    auto result = add2(x, y);
+    std::cout << "result : " << result << std::endl;
+    std::cout << "sizeof(result) : " << sizeof(result) << std::endl;
 
-    std::string h{"Hello"};
-    std::string w{"World"};
-    // add1(h, w); // error, params are not MyIntegral
-    // add2(h, w); // error, params are not Incrementable
-    // mult1(h, w); // error, params are not Multipliable
+    std::string x1{"Hello"};
+    std::string y1{"World"};
 
-    int e{7};
-    int f{2};
-    add3(e, f);
-
-    int g{7};
-    int i{2};
-    add4(g, i);
-
-    std::cout << "Done!" << std::endl;
+    auto s = x1 + y1;
+    std::cout << "s : " << s << std::endl;
 
     return 0;
 }
