@@ -1,48 +1,65 @@
 #include <iostream>
-#include <type_traits>
+#include <concepts>
 
+// Concepts are only C++20 or later
+//  restrict function parameter types for function templates
+
+// Syntax1
 template <typename T>
-void print_number(T n)
+requires std::integral<T>
+    T add1(T a, T b)
 {
-    static_assert(std::is_integral_v<T>, "print_number() can only be called with integral types");
-    std::cout << "number : " << n << std::endl;
+    return a + b;
+}
+
+// Syntax2
+template <std::integral T>
+T add2(T a, T b)
+{
+    return a + b;
+}
+
+// Syntax3
+auto add3(std::integral auto a, std::integral auto b)
+{
+    return a + b;
+}
+
+// Syntax4
+template <typename T>
+T add4(T a, T b) requires std::integral<T>
+{
+    return a + b;
 }
 
 int main()
 {
 
-    // std::is_integral true for int/const int/bool/char
-    // std::is_floating_point true for float/double, false for float&/double&
-    std::cout << std::boolalpha;
-    std::cout << "std::is_integral<int> : " << std::is_integral<int>::value << std::endl;
-    std::cout << "std::is_floating_point<int> : " << std::is_floating_point<int>::value << std::endl;
+    char a_0{10};
+    char a_1{20};
 
-    std::cout << "-------------" << std::endl;
+    auto result_a = add1(a_0, a_1);
+    std::cout << "result_a : " << static_cast<int>(result_a) << std::endl;
 
-    // std::is_integral_v = evaluates and returns a boolean
-    // std::is_floating_point_v = evaluates and returns a boolean
-    std::cout << "std::is_integral_v<int> : " << std::is_integral_v<int> << std::endl;
-    std::cout << "std::is_floating_point_v<int> : " << std::is_floating_point_v<int> << std::endl;
+    int b_0{11};
+    int b_1{5};
+    auto result_b = add2(b_0, b_1);
+    std::cout << "result_b : " << result_b << std::endl;
 
-    int a{7};
-    print_number(a);
+    double c_0{11.1};
+    double c_1{1.9};
+    // auto result_c = add3(c_0,c_1); // error, params are double, func requires int
+    // std::cout << "result_c : " << result_c << std::endl;
 
-    double b{7};
-    // print_number(b); // error, b is double
+    int d_0{33};
+    int d_1{42};
+    auto result_d = add3(d_0, d_1);
+    std::cout << "result_d : " << result_d << std::endl;
 
-    auto func = []<typename T>(T a, T b)
-    {
-        static_assert(std::is_integral_v<T>, "func can only be called with integral types");
-        return a + b;
-    };
-
-    double x{7};
-    double y{6};
-    // func(x,y); // error, x and y are double
-
-    int c{3};
-    int d{5};
-    func(c, d);
+    int e_0{33};
+    int e_1{42};
+    auto result_e = add4(e_0, e_1);
+    std::cout << "result_e : " << result_e << std::endl;
 
     return 0;
 }
