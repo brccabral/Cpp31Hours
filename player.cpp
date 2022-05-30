@@ -1,9 +1,9 @@
 #include "person.h"
 #include "player.h"
 
-Player::Player(std::string_view game_param)
-    : m_game(game_param)
+Player::Player(std::string_view game_param, std::string_view first_name_param, std::string_view last_name_param)
 {
-    // first_name = "John"; Compiler errors
-    // last_name = "Snow";
+    m_game = game_param;
+    first_name = first_name_param;
+    last_name = last_name_param;
 }

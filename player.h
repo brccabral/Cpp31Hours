@@ -12,7 +12,7 @@ class Player : public Person
 
 public:
     Player() = default;
-    Player(std::string_view game_param);
+    Player(std::string_view game_param, std::string_view first_name_param, std::string_view last_name_param);
 
 private:
     std::string m_game{"None"};
