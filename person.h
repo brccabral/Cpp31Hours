@@ -10,7 +10,7 @@ class Person
 public:
     Person();
     Person(std::string_view fullname, int age,
-           const std::string address);
+           std::string_view address);
     ~Person();
 
     // Getters

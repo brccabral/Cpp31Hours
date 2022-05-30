@@ -10,6 +10,8 @@ class Engineer : public Person
 
 public:
     Engineer();
+    Engineer(std::string_view fullname, int age,
+             std::string_view address, int contract_count);
     ~Engineer();
 
     void build_something()
