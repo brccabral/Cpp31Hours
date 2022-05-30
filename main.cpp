@@ -4,97 +4,30 @@ class Dog
 {
 public:
     Dog() = default;
-    Dog(std::string_view name_param, std::string_view breed_param, int age_param);
-    ~Dog();
-
-    void print_info()
+    void prin_info()
     {
-        std::cout << "Dog (" << this << ") : [ name : " << name
-                  << " breed : " << breed << " age : " << *p_age << "]" << std::endl;
     }
-
-    // Setters
-    // Chained calls using pointers
-    /*
-    Dog *set_dog_name(std::string_view name)
+    void do_something()
     {
-        // name = name; // This does nothing
-        this->name = name;
-        return this; // this is a pointer for this object
-    }
-    Dog *set_dog_breed(std::string_view breed)
-    {
-        this->breed = breed;
-        return this;
-    }
-
-    Dog *set_dog_age(int age)
-    {
-        *(this->p_age) = age; // p_age is pointer
-        return this;
-    }
-    */
-
-    // Chained calls using references
-    Dog &set_dog_name(std::string_view name)
-    {
-        // name = name; // This does nothing
-        this->name = name;
-        return *this;
-    }
-    Dog &set_dog_breed(std::string_view breed)
-    {
-        this->breed = breed;
-        return *this;
-    }
-
-    Dog &set_dog_age(int age)
-    {
-        *(this->p_age) = age; // p_age is pointer
-        return *this;
     }
 
 private:
-    std::string name;
-    std::string breed;
-    int *p_age{nullptr};
+    size_t leg_count; // 8
+    size_t arm_count; // 8
+    int *p_age;       // 8
 };
-Dog::Dog(std::string_view name_param, std::string_view breed_param, int age_param)
-{
-    name = name_param;
-    breed = breed_param;
-    p_age = new int;
-    *p_age = age_param;
-    std::cout << "Dog constructor called for " << name << " at " << this << std::endl;
-}
-
-Dog::~Dog()
-{
-    delete p_age; // p_age is in Heap
-    std::cout << "Dog destructor called for " << name << " at " << this << std::endl;
-}
 
 int main()
 {
 
-    Dog dog1("Fluffy", "Shepherd", 2); // Constructor
-    dog1.print_info();
+    Dog dog1;
+    std::cout << "sizeof(size_t) : " << sizeof(size_t) << std::endl; // 8
+    std::cout << "sizeof(int*) : " << sizeof(int *) << std::endl;    // 8
+    std::cout << "sizeof(Dog) : " << sizeof(dog1) << std::endl;      // 24 (three members of 8 bytes)
 
-    /*
-    dog1.set_dog_name("Pumba");
-    dog1.set_dog_breed("Wire Fox Terrier");
-    dog1.set_dog_age(4);
-    */
+    std::string name{"I am the king of the universe and multiverse!"}; // 32, string size don't count number of chars
 
-    // Chained calls using pointers, use arrow
-    // dog1.set_dog_name("Pumba")->set_dog_breed("Wire Fox Terrier")->set_dog_age(4);
+    std::cout << "sizeof(name) : " << sizeof(name) << std::endl;
 
-    // Chained calls using references, use dot
-    dog1.set_dog_name("Pumba").set_dog_breed("Wire Fox Terrier").set_dog_age(4);
-
-    dog1.print_info();
-
-    std::cout << "Done!" << std::endl;
-    // Destructor
     return 0;
 }
