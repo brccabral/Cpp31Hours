@@ -4,6 +4,7 @@
 
 Engineer::Engineer()
 {
+    std::cout << "Default constructor for Engineer called..." << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &out, const Engineer &operand)

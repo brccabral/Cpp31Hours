@@ -6,6 +6,7 @@
 
 CivilEngineer::CivilEngineer()
 {
+    std::cout << "Default constructor called for CivilEnginner ... " << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &out, const CivilEngineer &operand)
