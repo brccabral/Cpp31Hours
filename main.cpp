@@ -1,37 +1,24 @@
 #include <iostream>
-#include <concepts>
-
-template <typename T>
-concept TinyType = requires(T t)
-{
-    sizeof(T) <= 4;          // Simple requirement
-    requires sizeof(T) <= 4; // Nested requirement
-};
-
-template <typename T>
-// requires std::integral<T> || std::floating_point<T> // OR operator
-// requires std::integral<T> && TinyType<T>
-requires std::integral<T> && requires(T t)
-{
-    sizeof(T) <= 4;          // Simple requirement
-    requires sizeof(T) <= 4; // Nested requirement
-}
-T add(T a, T b)
-{
-    return a + b;
-}
+#include "cylinder.h"
 
 int main()
 {
 
-    long long int x{7};
-    long long int y{5};
+    Cylinder cylinder1(10, 10);
+    std::cout << "volume : " << cylinder1.volume() << std::endl;
 
-    // add(x, y); // error, "long long int" is not TinyType
+    // Managing a stack object through pointers
+    Cylinder *p_cylinder1 = &cylinder1;
 
-    int x1{2};
-    int x2{200};
-    add(x1, x2);
+    std::cout << "*p_cylinder1.volume : " << (*p_cylinder1).volume() << std::endl; // to use dot notation, need to dereference with *
+    std::cout << "p_cylinder1->volume : " << p_cylinder1->volume() << std::endl;   // if not dereference, use arrow notation ->
+
+    // Create a cylinder heap object through the new operator
+    Cylinder *p_cylinder2 = new Cylinder(100, 2); // Heap (new keyword, remember to delete)
+
+    std::cout << "*p_cylinder2.volume() : " << (*p_cylinder2).volume() << std::endl;
+    std::cout << "p_cylinder2->get_base_radius() : " << p_cylinder2->get_base_radius() << std::endl;
+    delete p_cylinder2;
 
     return 0;
 }
