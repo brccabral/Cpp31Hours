@@ -28,9 +28,7 @@ void Person::do_something() const
 
 std::ostream &operator<<(std::ostream &out, const Person &person)
 {
-    out << "Person [Full name :" << person.get_full_name() << 
-        ", Age:" << person.get_age() << 
-        ", Address:" << person.get_address() << "]";
+    out << "Person [Full name :" << person.get_full_name() << ", Age:" << person.get_age() << ", Address:" << person.get_address() << "]";
     return out;
 }
 
