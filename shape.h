@@ -1,29 +1,27 @@
 #ifndef SHAPE_H
 #define SHAPE_H
-
-#include <string>
-#include <string_view>
 #include <iostream>
+#include <string>
 class Shape
 {
 public:
-    Shape() = default;
+    Shape();
     Shape(std::string_view description);
-    ~Shape();
-
-    virtual void draw() const
+    virtual ~Shape();
+    void draw() const
     {
-        std::cout << "Shape::draw() called. Drawing " << m_description << std::endl;
+        std::cout << "Shape::draw() called for : " << m_description << std::endl;
     }
 
-    // overload = functions with same name but different params
-    virtual void draw(int color_depth) const
+    virtual int get_count() const
     {
-        std::cout << "Shape::Drawing with color depth : " << color_depth << std::endl;
+        return m_count;
     }
+
+    static int m_count;
 
 protected:
-    std::string m_description{""};
+    std::string m_description;
 };
 
 #endif // SHAPE_H
