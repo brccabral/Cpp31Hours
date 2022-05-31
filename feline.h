@@ -12,6 +12,10 @@ public:
     {
         std::cout << "Feline " << m_description << " is running" << std::endl;
     }
+    void do_some_feline_thingy()
+    {
+        std::cout << "Doing some feline thingy..." << std::endl;
+    }
     std::string m_fur_style;
 };
 

@@ -12,6 +12,14 @@ public:
     {
         std::cout << "Dog::bark called : Woof!" << std::endl;
     }
+
+    void do_some_dog_thingy()
+    {
+        std::cout << "Doing some dog thingy...,speed : " << m_speed << std::endl;
+    }
+
+private:
+    double m_speed{};
 };
 
 #endif // DOG_H
