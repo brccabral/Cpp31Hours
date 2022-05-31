@@ -1,50 +1,25 @@
 #include <iostream>
 
-#include "ellipse.h"
+// 1 - class MyClass final = can't be inherited
+// 2 - myFunc() final = can't be overrided by inherited classes
+// 3 - virtual myFunc() final = final will win and can't be overrided by inherited classes
+// 4 - class MyClass final { virtual myFunc() } = can't inherit class so virtual is useless
 
+// Intersting fact #1
+/*
+class Plane final
+{
+    Plane() = default;
+};
+
+// This will trigger a compiler error because Plane is final
+class FigherJet : public Plane
+{
+};
+*/
 int main()
 {
 
-    // Shape
-    Shape shape1("shape1");
-    std::cout << "shape count : " << Shape::m_count << std::endl; // 1
-
-    Shape shape2("shape2");
-    std::cout << "shape count : " << Shape::m_count << std::endl; // 2
-
-    Shape shape3;
-    std::cout << "shape count : " << Shape::m_count << std::endl; // 3
-
-    std::cout << "***********************************************" << std::endl;
-
-    // Ellipse
-    Ellipse ellipse1(10, 12, "ellipse1");
-    std::cout << "shape count : " << Shape::m_count << std::endl;     // 4
-    std::cout << "ellipse count : " << Ellipse::m_count << std::endl; // 1
-
-    std::cout << "***********************************************" << std::endl;
-
-    // Shape polymorphism
-
-    Shape *shapes[]{&shape1, &ellipse1};
-    for (auto &s : shapes)
-    {
-        std::cout << "count : " << s->get_count() << std::endl;
-    }
-
-    /*
-    Ellipse has its own static m_count
-
-    shape count : 1
-    shape count : 2
-    shape count : 3
-    ***********************************************
-    shape count : 4
-    ellipse count : 1
-    ***********************************************
-    count : 4
-    count : 1
-    */
-
+    std::cout << "Hello" << std::endl;
     return 0;
 }
