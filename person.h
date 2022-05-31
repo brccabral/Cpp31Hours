@@ -11,6 +11,7 @@ public:
     Person();
     Person(std::string_view fullname, int age,
            std::string_view address);
+    Person(const Person &source);
     ~Person();
 
     // Getters
