@@ -1,95 +1,33 @@
 #include <iostream>
+#include <memory>
 #include "shape.h"
 #include "oval.h"
 #include "circle.h"
-#include <memory>
-
-// After changind all draw() methods to "virtual" we can achieve
-//  dynamic biding and call the correct class method
-
-void draw_shape(Shape *shape_ptr)
-{
-    std::cout << "Ptr " << shape_ptr->get_desc() << std::endl;
-    shape_ptr->draw();
-}
-
-void draw_shape(const Shape &shape)
-{
-    std::cout << "Ref " << shape.get_desc() << std::endl;
-    shape.draw();
-}
 
 int main()
 {
 
-    Shape shape1("Shape1");
-    shape1.draw(); // Shape::draw() called. Drawing Shape1
+    Circle c1(7.2, "c1");
+    Oval o1(13.3, 1.2, "o1");
+    c1.draw(); // Circle::draw() called. Drawing c1 with radius : 7.2
 
-    Oval oval1(2.0, 3.5, "Oval1");
-    oval1.draw(); // Oval::draw() called. Drawing Oval1 with m_x_radius : 2 and m_y_radius : 3.5
+    // When using override, needs to override all overloaded functions (functions with same name)
+    // c1.draw(12,"Green"); // Compile error - Circle overrides only one draw(), but not the other draw(int)
 
-    Circle circle1(3.3, "Circle1");
-    circle1.draw(); // Circle::draw() called. Drawing Circle1 with radius : 3.3
+    o1.draw();            // Oval::draw() called. Drawing o1 with m_x_radius : 13.3 and m_y_radius : 1.2
+    o1.draw(12, "Green"); // Drawing with color depth : 12 and color : Green
 
-    // Base pointers
-    Shape *shape_ptr = &shape1;
-    shape_ptr->draw(); // Shape::draw() called. Drawing Shape1
+    Shape *shape_ptr1 = new Oval(10, 15, "Oval1");
+    shape_ptr1->draw(); // Oval::draw() called. Drawing Oval1 with m_x_radius : 10 and m_y_radius : 15
+    // shape_ptr1->draw(3, "Red"); // Shape doesn't know any draw(int,str)
 
-    shape_ptr = &oval1;
-    shape_ptr->draw(); // Oval::draw() called. Drawing Oval1 with m_x_radius : 2 and m_y_radius : 3.5
+    Oval *o_ptr = new Oval(2, 4, "Optr");
+    o_ptr->draw();          // Oval::draw() called. Drawing Optr with m_x_radius : 2 and m_y_radius : 4
+    o_ptr->draw(3, "Blue"); // Drawing with color depth : 3 and color : Blue
 
-    shape_ptr = &circle1;
-    shape_ptr->draw(); // Circle::draw() called. Drawing Circle1 with radius : 3.3
-
-    // Base references
-    Shape &shape_ref = circle1;
-    shape_ref.draw(); // Circle::draw() called. Drawing Circle1 with radius : 3.3
-
-    // Shapes stored in collections
-    Circle circle_collection[]{circle1, Circle(10.0, "Circle2"), Circle(20.0, "Circle3")};
-    Oval oval_collection[]{oval1, Oval(22.3, 51.1, "Oval2")};
-    // More arrays as you have more shape types, 100? Messy right?
-    for (const auto &c : circle_collection)
-    {
-        c.draw(); // Circle::draw() called. Drawing Circle1 with radius : XXX
-    }
-
-    draw_shape(circle1); // Ref Circle1
-                         // Circle::draw() called. Drawing Circle1 with radius : 3.3
-
-    draw_shape(&oval1); // Ptr Oval1
-                        // Oval::draw() called. Drawing Oval1 with m_x_radius : 2 and m_y_radius : 3.5
-
-    // Raw pointers
-    Shape *shape_collection[]{&shape1, &oval1, &circle1};
-    for (Shape *s_ptr : shape_collection)
-    {
-        s_ptr->draw(); // Shape::draw()|Oval::draw|Circle::draw called. Drawing DDD
-    }
-
-    // Smart pointers // #include <memory>
-    std::shared_ptr<Shape> shapes4[]{std::make_shared<Circle>(12.2, "Circle4"),
-                                     std::make_shared<Oval>(10.0, 20.0, "Oval4")};
-    for (auto &s : shapes4)
-    {
-        s->draw(); // Circle::draw|Oval::draw() called. Drawing DDD
-    }
-
-    // Slicing
-    Shape sliced = circle1; // this will "slice" circle1 and leave only the shape part of it
-    sliced.draw();          // Shape::draw() called. Drawing Circle1
-
-    Circle circle2(11.2, "circle2");
-    Oval oval2(31.3, 15.2, "Oval2");
-    Circle circle3(12.2, "circle3");
-    Oval oval3(53.3, 9.2, "Oval3");
-
-    // still Slicing
-    Shape sliced_shapes[]{circle1, oval1, circle2, oval2, circle3, oval3};
-    for (Shape &s : sliced_shapes)
-    {
-        s.draw(); // Shape::draw() called. Drawing DDD
-    }
+    Shape *shape_ptr = new Circle(10, "Circle1");
+    shape_ptr->draw();  // Circle::draw() called. Drawing Circle1 with radius : 10
+    shape_ptr->draw(2); // Circle doesn't override draw(int) // Shape::Drawing with color depth : 2
 
     return 0;
 }

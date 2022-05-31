@@ -16,9 +16,10 @@ public:
         std::cout << "Shape::draw() called. Drawing " << m_description << std::endl;
     }
 
-    std::string get_desc() const
+    // overload = functions with same name but different params
+    virtual void draw(int color_depth) const
     {
-        return m_description;
+        std::cout << "Shape::Drawing with color depth : " << color_depth << std::endl;
     }
 
 protected:
