@@ -1,43 +1,24 @@
 #include <iostream>
-#include "derived.h"
+#include "dog.h"
 
 int main()
 {
 
-    // Base ptr : Uses polymorphism
-    Base *base_ptr1 = new Derived;
-    double result = base_ptr1->add();                           // will use Base default, but Derived formula
-    std::cout << "Result (base ptr) : " << result << std::endl; // 12
+    Animal *p_animal = new Dog;
 
-    std::cout << "---------------------" << std::endl;
+    delete p_animal;
 
-    // Base ref : Uses Polymorphism
-    Derived derived1;
-    Base &base_ref1 = derived1;
-    result = base_ref1.add();                                   // will use Base default, but Derived formula
-    std::cout << "Result (base ref) : " << result << std::endl; // 12
+    /*
+    If destructors are not virtual, only Animal destructor will be called if we are using polymorphism
+    Animal destructor called
 
-    std::cout << "---------------------" << std::endl;
+    If we add virtual to the destructors, all derived classes are going to call their destructor
+    Dog destructor called
+    Feline destructor called
+    Animal destructor called
+    */
 
-    // Raw objects
-    Base base3;
-    result = base3.add();
-    std::cout << "raw result : " << result << std::endl; // 11
-
-    std::cout << "---------------------" << std::endl;
-
-    // Direct object : Uses static binding
-    Derived derived2;
-    result = derived2.add();
-    std::cout << "Result (Direct object) : " << result << std::endl; // 22
-
-    std::cout << "---------------------" << std::endl;
-
-    // Raw objects - slicing : uses static binding
-    Base base1 = derived2;
-    result = base1.add();                                                     // Derived will be sliced, thus, will use
-                                                                              //  default from Base and formula from Base
-    std::cout << "Result (Raw objects assignment) : " << result << std::endl; // 11
+    Dog d1; // without polymorphism all destructors are called as expected
 
     return 0;
 }
