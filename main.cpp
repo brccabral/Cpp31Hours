@@ -1,17 +1,17 @@
 #include <iostream>
-#include "civilengineer.h"
+#include "child.h"
 
 int main()
 {
+    Child child(33);
+    child.print_var();        // Calls the method in Child // The value in child is : 33
+    child.Adult::print_var(); // Calls the method in Adult, // The value in adult is : 100
+                              // value in adult just contains junk or whatever
+                              // in class initialization we did.
 
-    CivilEngineer eng1("Daniel Gray", 41, "Green Sky Oh Blue 33St#75", 12, "Road Strength");
-    /*
-    Custom constructor for Person called...
-    Custom constructor for Engineer called...
-    Custom constructor called for CivilEngineer ...
-    Destructor called for CivilEngineer ...
-    Destructor for Engineer called ...
-    Destructor for Person called ..
-    */
+    std::cout << "--------" << std::endl;
+    child.show_values(); // The value in child is :33
+                         // The value in adult is : 100
+
     return 0;
 }
