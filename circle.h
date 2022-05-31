@@ -9,7 +9,7 @@ public:
     Circle(double radius, std::string_view description);
     ~Circle();
 
-    void draw() const
+    virtual void draw() const
     {
         std::cout << "Circle::draw() called. Drawing " << m_description << " with radius : " << get_x_rad() << std::endl;
     }

@@ -11,7 +11,7 @@ public:
     Shape(std::string_view description);
     ~Shape();
 
-    void draw() const
+    virtual void draw() const
     {
         std::cout << "Shape::draw() called. Drawing " << m_description << std::endl;
     }

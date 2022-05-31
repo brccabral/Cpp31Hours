@@ -3,16 +3,8 @@
 #include "oval.h"
 #include "circle.h"
 
-void draw_circle(const Circle &circle)
-{
-    circle.draw();
-}
-
-void draw_oval(const Oval &oval)
-{
-    oval.draw();
-}
-// More functions as you deal with more shape types. 30 ? 70? 100? It's messy.
+// After changind all draw() methods to "virtual" we can achieve
+//  dynamic biding and call the correct class method
 
 void draw_shape(Shape *shape_ptr)
 {
@@ -38,25 +30,19 @@ int main()
     Circle circle1(3.3, "Circle1");
     circle1.draw(); // Circle::draw() called. Drawing Circle1 with radius : 3.3
 
-    // Static binding, we are calling Shape::draw()
     // Base pointers
     Shape *shape_ptr = &shape1;
     shape_ptr->draw(); // Shape::draw() called. Drawing Shape1
 
     shape_ptr = &oval1;
-    shape_ptr->draw(); // Shape::draw() called. Drawing Oval1
+    shape_ptr->draw(); // Oval::draw() called. Drawing Oval1 with m_x_radius : 2 and m_y_radius : 3.5
 
     shape_ptr = &circle1;
-    shape_ptr->draw(); // Shape::draw() called. Drawing Circle1
+    shape_ptr->draw(); // Circle::draw() called. Drawing Circle1 with radius : 3.3
 
-    // still static binding
     // Base references
     Shape &shape_ref = circle1;
-    shape_ref.draw(); // Shape::draw() called. Drawing Circle1
-
-    // Drawing shapes
-    draw_circle(circle1); // Circle::draw() called. Drawing Circle1 with radius : 3.3
-    draw_oval(oval1);     // Oval::draw() called. Drawing Oval1 with m_x_radius : 2 and m_y_radius : 3.5
+    shape_ref.draw(); // Circle::draw() called. Drawing Circle1 with radius : 3.3
 
     // Shapes stored in collections
     Circle circle_collection[]{circle1, Circle(10.0, "Circle2"), Circle(20.0, "Circle3")};
@@ -67,17 +53,16 @@ int main()
         c.draw(); // Circle::draw() called. Drawing Circle1 with radius : XXX
     }
 
-    // still static binding
     draw_shape(circle1); // Ref Circle1
-                         // Shape::draw() called. Drawing Circle1
+                         // Circle::draw() called. Drawing Circle1 with radius : 3.3
 
     draw_shape(&oval1); // Ptr Oval1
-                        // Shape::draw() called. Drawing Oval1
+                        // Oval::draw() called. Drawing Oval1 with m_x_radius : 2 and m_y_radius : 3.5
 
     Shape *shape_collection[]{&shape1, &oval1, &circle1};
     for (Shape *s_ptr : shape_collection)
     {
-        s_ptr->draw(); // Shape::draw() called. Drawing DDD
+        s_ptr->draw(); // Shape::draw()|Oval::draw|Circle::draw called. Drawing DDD
     }
 
     return 0;
