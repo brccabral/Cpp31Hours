@@ -2,6 +2,7 @@
 #include "shape.h"
 #include "oval.h"
 #include "circle.h"
+#include <memory>
 
 // After changind all draw() methods to "virtual" we can achieve
 //  dynamic biding and call the correct class method
@@ -59,10 +60,35 @@ int main()
     draw_shape(&oval1); // Ptr Oval1
                         // Oval::draw() called. Drawing Oval1 with m_x_radius : 2 and m_y_radius : 3.5
 
+    // Raw pointers
     Shape *shape_collection[]{&shape1, &oval1, &circle1};
     for (Shape *s_ptr : shape_collection)
     {
         s_ptr->draw(); // Shape::draw()|Oval::draw|Circle::draw called. Drawing DDD
+    }
+
+    // Smart pointers // #include <memory>
+    std::shared_ptr<Shape> shapes4[]{std::make_shared<Circle>(12.2, "Circle4"),
+                                     std::make_shared<Oval>(10.0, 20.0, "Oval4")};
+    for (auto &s : shapes4)
+    {
+        s->draw(); // Circle::draw|Oval::draw() called. Drawing DDD
+    }
+
+    // Slicing
+    Shape sliced = circle1; // this will "slice" circle1 and leave only the shape part of it
+    sliced.draw();          // Shape::draw() called. Drawing Circle1
+
+    Circle circle2(11.2, "circle2");
+    Oval oval2(31.3, 15.2, "Oval2");
+    Circle circle3(12.2, "circle3");
+    Oval oval3(53.3, 9.2, "Oval3");
+
+    // still Slicing
+    Shape sliced_shapes[]{circle1, oval1, circle2, oval2, circle3, oval3};
+    for (Shape &s : sliced_shapes)
+    {
+        s.draw(); // Shape::draw() called. Drawing DDD
     }
 
     return 0;
