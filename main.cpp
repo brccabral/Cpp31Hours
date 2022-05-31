@@ -1,25 +1,43 @@
 #include <iostream>
+#include "derived.h"
 
-// 1 - class MyClass final = can't be inherited
-// 2 - myFunc() final = can't be overrided by inherited classes
-// 3 - virtual myFunc() final = final will win and can't be overrided by inherited classes
-// 4 - class MyClass final { virtual myFunc() } = can't inherit class so virtual is useless
-
-// Intersting fact #1
-/*
-class Plane final
-{
-    Plane() = default;
-};
-
-// This will trigger a compiler error because Plane is final
-class FigherJet : public Plane
-{
-};
-*/
 int main()
 {
 
-    std::cout << "Hello" << std::endl;
+    // Base ptr : Uses polymorphism
+    Base *base_ptr1 = new Derived;
+    double result = base_ptr1->add();                           // will use Base default, but Derived formula
+    std::cout << "Result (base ptr) : " << result << std::endl; // 12
+
+    std::cout << "---------------------" << std::endl;
+
+    // Base ref : Uses Polymorphism
+    Derived derived1;
+    Base &base_ref1 = derived1;
+    result = base_ref1.add();                                   // will use Base default, but Derived formula
+    std::cout << "Result (base ref) : " << result << std::endl; // 12
+
+    std::cout << "---------------------" << std::endl;
+
+    // Raw objects
+    Base base3;
+    result = base3.add();
+    std::cout << "raw result : " << result << std::endl; // 11
+
+    std::cout << "---------------------" << std::endl;
+
+    // Direct object : Uses static binding
+    Derived derived2;
+    result = derived2.add();
+    std::cout << "Result (Direct object) : " << result << std::endl; // 22
+
+    std::cout << "---------------------" << std::endl;
+
+    // Raw objects - slicing : uses static binding
+    Base base1 = derived2;
+    result = base1.add();                                                     // Derived will be sliced, thus, will use
+                                                                              //  default from Base and formula from Base
+    std::cout << "Result (Raw objects assignment) : " << result << std::endl; // 11
+
     return 0;
 }
